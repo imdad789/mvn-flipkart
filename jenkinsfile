@@ -1,64 +1,14 @@
+pipeline{
 
-pipeline {
-    agent 
-    {
-        label 'devnode'
-    }
-    tools {
-        maven 'maven-3.6.3'
-    }
-    stages {
-        stage('Checkout-Parallel') {
-            parallel{
-                stage('DevCheckout'){
-                    agent {label 'devnode'}
-            steps {
-                checkout scmGit(branches: [[name: '*/dev']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/imdad789/mvn-flipkart']])
-                            }
-            }
-            stage('TestCheckout'){
-                    agent {label 'testnode'}
-            steps {
-                checkout scmGit(branches: [[name: '*/test']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/imdad789/mvn-flipkart']])
-                }
+    agent any
+
+    stages{
+        stage(code checkout){
+            steps{
+
+                git 'https://github.com/imdad789/mvn-flipkart'
             }
         }
-        }
-        stage('Build Parallel'){
-            parallel{
-        stage('Build-devnode') {
-            agent {
-                label 'devnode'
-                }
-            steps {
-                sh 'mvn clean package -f pom.xml'
-            }
-        }
-        stage('Build-testnode') {
-            agent {
-                label 'testnode'
-            }
-            steps {
-                sh 'mvn clean package -f pom.xml'
-            }
-        }
-        }
-        }
-        stage('Deploy-Parallel'){
-            parallel{
-        stage('Deploy to Dev-server') {
-            agent {label 'devnode'}
-            steps {
-                deploy adapters: [tomcat9(credentialsId: 'tomcat', path: '', url: 'http://3.6.41.122:8080')], contextPath: 'flipkart', war: 'target/flipkart.war'
-            }
-        }
-        stage('Deploy to test-serverr') {
-            agent {label 'testnode'}
-            steps {
-                deploy adapters: [tomcat9(credentialsId: 'tomcat', path: '', url: 'http://13.233.204.125:8080')], contextPath: 'flipkart', war: 'target/flipkart.war'
-            }
-        }
-        }
-        }
+
     }
 }
