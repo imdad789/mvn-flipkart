@@ -4,6 +4,8 @@
 <h2>               Hello Friends!               </h2>
 <h3> !!!!!!!! WELCOME TO DEVOPS with GCP -BATCH-6 NOV-15th !!!!!!!!     </h3>
 <h4> FLIPKART PROJECT FROM Visual Studio Code +  </h4>
+<h4> I'm from RELEASE_1.0.0  </h4>
+
 <marquee behavior="alternate">Devops</marquee>
 <font color="WHITE"><marquee direction="left" style="background:RED">DEVOPS</marquee></font>
 <marquee behavior="scroll" direction="up">
